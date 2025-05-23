@@ -1,0 +1,45 @@
+[
+  {
+    "orderId": "108",
+    "tableNo": "05",
+    "time": "9:37 AM",
+    "items": [
+      "Coca-Cola L1 x1",
+      "Apple Pie x1",
+      "Double Cheeseburger x1",
+      "Value Set Meals x1"
+    ],
+    "orderType": "Served"
+  },
+  {
+    "orderId": "109",
+    "tableNo": "06",
+    "time": "9:45 AM",
+    "items": [
+      "Pepsi x1",
+      "Fries x1",
+      "Veg Burger x1"
+    ],
+    "orderType": "Dine In"
+  },
+  {
+    "orderId": "110",
+    "tableNo": "07",
+    "time": "10:05 AM",
+    "items": [
+      "Sprite x1",
+      "Chicken Nuggets x1"
+    ],
+    "orderType": "Take Away"
+  },
+  {
+    "orderId": "111",
+    "tableNo": "08",
+    "time": "10:15 AM",
+    "items": [
+      "Sprite x1",
+      "Chicken Nuggets x1"
+    ],
+    "orderType": "Dine In"
+  }
+]

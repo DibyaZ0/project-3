@@ -1,0 +1,172 @@
+.tables-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 32px;
+  height: 920px;
+  width: 1800px;
+  box-sizing: border-box;
+  background-color: #F0F5F3;
+  margin-top: -20px;
+  overflow: hidden;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.search-bar {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 300px;
+  font-size: 14px;
+}
+
+.tables-card {
+  background-color: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+}
+
+.tables-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.table-card {
+  width: 120px;
+  height: 120px;
+  background-color: #f3f6f5;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  position: relative; 
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  padding: 0;
+}
+
+.table-title {
+  position: absolute;
+  top: 16px;         
+  left: 50px;
+  transform: translateX(-50%);
+  font-size: 30px;
+}
+
+.table-id {
+  position: absolute;
+  top: 50px;         
+  left: 40px;        
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.delete-icon {
+  position: absolute;
+  bottom: 78px;
+  left: 72px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #333;
+}
+
+.chair-info {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #111;
+}
+
+.chair-icon {
+  font-size: 14px;
+}
+
+.add-box {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed #888;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 2rem;
+  border-radius: 12px;
+  color: #555;
+}
+
+.plus-icon {
+  font-size: 32px;
+  user-select: none;
+}
+
+.form-box {
+  width: 150px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  background-color: #f3f6f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: sans-serif;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  font-size: 12px;
+  color: #333;
+  align-self: flex-start;
+}
+
+.form-input {
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  text-align: center;
+  outline: none;
+  width: 100%;
+  border-bottom: 1px dashed #aaa;
+}
+
+.form-select {
+  font-size: 14px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.create-btn {
+  width: 100%;
+  padding: 8px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
