@@ -103,6 +103,7 @@ function Menunext() {
               <input type="text" className="address" placeholder="Delivery Address" value={address} onChange={(e) => setAddress(e.target.value)} />
             )}
             <button className="save-details-btn" onClick={handleSave}>Save</button>
+            <p className="mandatory-note">* This field is mandatory. Without this, you can't move further.</p>
           </>
         ) : (
         <div className="user-summary">

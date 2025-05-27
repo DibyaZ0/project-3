@@ -39,7 +39,7 @@ function Tables() {
   return (
     <div className="tables-wrapper">
       <div className="top-bar">
-        <input className="search-bar" type="text" placeholder="Search..." />
+        <input className="search-bar1" type="text" placeholder="Search..." />
       </div>
 
       <div className="tables-card">

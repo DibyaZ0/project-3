@@ -56,6 +56,12 @@
   height: 32px;
   margin-bottom: 4px;
   object-fit: contain;
+  filter: brightness(0.1) contrast(1.2);
+  transition: filter 0.2s ease;
+}
+
+.category-item.active .category-icon {
+  filter: brightness(2); 
 }
 
 .category-section {

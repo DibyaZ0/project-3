@@ -2,13 +2,17 @@
   display: flex;
   flex-direction: column;
   padding: 24px 32px;
+  /* height: 100vh; */
+  /* width: 100vw; */
   height: 920px;
   width: 1800px;
   box-sizing: border-box;
   background-color: #F0F5F3;
+  /* padding-bottom: 0; */
+  padding-bottom: 15px;
   margin-top: -20px;
   margin-left: -20px; 
-  padding-right: 0px;
+  padding-right: 15px;
 }
 
 .top-bar {
@@ -17,12 +21,14 @@
   margin-bottom: 16px;
 }
 
-.search-bar {
+.search-bar1 {
   padding: 10px 16px;
   border-radius: 8px;
   border: 1px solid #ccc;
   width: 300px;
   font-size: 14px;
+  position: relative;
+  margin-top: -5px;
 }
 
 .tables-card {
@@ -35,6 +41,8 @@
   gap: 20px;
   height: 100%;
   margin-left: -30px;
+  position: relative;
+  margin-top: 15px;
 }
 
 .page-title {

@@ -7,6 +7,7 @@ function Menu() {
   const [data, setData] = useState({});
   const [activeCategory, setActiveCategory] = useState('Pizza');
   const [cartItems, setCartItems] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const categories = [
@@ -44,7 +45,6 @@ function Menu() {
           i.name === item.name ? { ...i, quantity: i.quantity - 1 } : i
         );
       }
-      // Remove item completely if quantity is 1 and clicked remove
       return prev.filter(i => i.name !== item.name);
     });
   };
@@ -53,12 +53,22 @@ function Menu() {
     navigate('/menunext', { state: { cartItems } });
   };
 
+  const filteredItems = (data[activeCategory] || []).filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="menu-container">
       <h2 className="menu-greeting1">Good evening</h2>
       <p className="menu-subtext1">Place your order here</p>
 
-      <input className="menu-find1" type="text" placeholder="search..." />
+      <input
+        className="menu-find1"
+        type="text"
+        placeholder="search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
 
       <div className="menu-categories">
         {categories.map((cat, index) => (
@@ -76,7 +86,7 @@ function Menu() {
       <div className="category-section">
         <h3 className="category-title">{activeCategory}</h3>
         <div className="menu-items">
-          {(data[activeCategory] || []).map((item, index) => {
+          {filteredItems.map((item, index) => {
             const cartItem = cartItems.find(i => i.name === item.name);
             return (
               <div className="menu-card" key={index}>
@@ -86,26 +96,26 @@ function Menu() {
                   <p className="item-price">{item.price}</p>
                 </div>
                 <div className="quantity-controls">
-                {cartItem?.quantity > 0 ? (
-                <>
-                <button className="qty-btn" onClick={() => handleRemoveFromCart(cartItem)}><FiMinus /></button>
-                <span className="item-quantity">{cartItem.quantity}</span>
-                <button className="qty-btn" onClick={() => handleAddToCart(cartItem)}><FiPlus /></button>
-                </>
-               ) : (
-               <button
-               className="qty-btn"
-               onClick={() => handleAddToCart({
-               name: item.name,
-               price: Number(item.price.replace(/[^\d]/g, '')),
-               image: item.image
-              })}
-              >
-             <FiPlus />
-             </button>
-             )}
-            </div>
-            </div>
+                  {cartItem?.quantity > 0 ? (
+                    <>
+                      <button className="qty-btn" onClick={() => handleRemoveFromCart(cartItem)}><FiMinus /></button>
+                      <span className="item-quantity">{cartItem.quantity}</span>
+                      <button className="qty-btn" onClick={() => handleAddToCart(cartItem)}><FiPlus /></button>
+                    </>
+                  ) : (
+                    <button
+                      className="qty-btn"
+                      onClick={() => handleAddToCart({
+                        name: item.name,
+                        price: Number(item.price.replace(/[^\d]/g, '')),
+                        image: item.image
+                      })}
+                    >
+                      <FiPlus />
+                    </button>
+                  )}
+                </div>
+              </div>
             )
           })}
         </div>
@@ -117,4 +127,3 @@ function Menu() {
 }
 
 export default Menu;
-
