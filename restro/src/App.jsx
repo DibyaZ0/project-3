@@ -5,6 +5,8 @@ import Dashboard from './Dashboard';
 import Tables from './Tables';
 import Orderline from './orderline';
 import Menu from './menu';
+import Menunext from './menunext';
+import Success from './success';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/tables" element={<Tables />} />
           <Route path="/orderline" element={<Orderline />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/menunext" element={<Menunext />} />
+          <Route path="/success" element={<Success />} />   
         </Routes>
       </div>
     </Router>

@@ -6,10 +6,12 @@
   overflow-x: hidden;
   box-sizing: border-box;
   margin-top: -20px;
+  margin-left: -20px;
 }
 
 .dashboard-wrapper-2{
   background-color: #FFFFFF;
+  border-radius: 12px;
 }
 
 .top-bar {
@@ -70,7 +72,7 @@
 
 .card-grid {
   display: flex;
-  gap: 20px;
+  gap: 80px;
   margin-bottom: 20px;
   padding: 10px;
   height: 190px;

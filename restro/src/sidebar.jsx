@@ -8,6 +8,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   if (location.pathname === '/menu') return null;
+  if (location.pathname === '/menunext') return null;
 
   return (
     <div className="sidebar">

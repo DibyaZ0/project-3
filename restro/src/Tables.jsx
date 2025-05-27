@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaChair, FaTrash } from 'react-icons/fa';
 import './Tables.css';
 
 function Tables() {
@@ -52,12 +53,12 @@ function Tables() {
                 onClick={() => handleDelete(table.id)}
                 title="Delete"
               >
-                🗑️
+                <FaTrash />
               </button>
               <div className="table-title">Table</div>
               <div className="table-id">{String(index + 1).padStart(2, '0')}</div>
               <div className="chair-info">
-                <span className="chair-icon">🪑</span> {table.chairs}
+                <FaChair className="chair-icon" /> {table.chairs}
               </div>
             </div>
           ))}

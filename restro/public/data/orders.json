@@ -9,7 +9,9 @@
       "Double Cheeseburger x1",
       "Value Set Meals x1"
     ],
-    "orderType": "Served"
+    "orderType": "Dine In",
+    "startTime": "2025-05-23T17:17:00Z",
+    "durationMin": 30
   },
   {
     "orderId": "109",
@@ -20,7 +22,9 @@
       "Fries x1",
       "Veg Burger x1"
     ],
-    "orderType": "Dine In"
+    "orderType": "Dine In",
+    "startTime": "2025-05-23T17:17:00Z",
+    "durationMin": 68
   },
   {
     "orderId": "110",
@@ -30,7 +34,8 @@
       "Sprite x1",
       "Chicken Nuggets x1"
     ],
-    "orderType": "Take Away"
+    "orderType": "Take Away",
+    "statusDetail": "Not Picked up"
   },
   {
     "orderId": "111",
@@ -40,6 +45,8 @@
       "Sprite x1",
       "Chicken Nuggets x1"
     ],
-    "orderType": "Dine In"
+    "orderType": "Dine In",
+    "startTime": "2025-05-23T17:17:00Z",
+    "durationMin": 18
   }
 ]

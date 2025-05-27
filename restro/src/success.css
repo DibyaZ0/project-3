@@ -1,0 +1,17 @@
+.success-container {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.success-container h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.success-container p {
+  font-size: 18px;
+  color: #333;
+}
