@@ -7,6 +7,7 @@ function Tables() {
   const [showForm, setShowForm] = useState(false);
   const [tempName, setTempName] = useState('');
   const [tempChairs, setTempChairs] = useState('01');
+  const [searchTable, setSearchTable] = useState('');
 
   useEffect(() => {
     fetch('/data/tablesData.json')
@@ -28,7 +29,7 @@ function Tables() {
       },
     ]);
     setTempName('');
-    setTempChairs('01');
+    setTempChairs('03');
     setShowForm(false);
   };
 
@@ -36,32 +37,53 @@ function Tables() {
     setTables(tables.filter((t) => t.id !== id));
   };
 
+  const filteredIndexes = tables.reduce((acc, table, i) => {
+    const tableNumber = String(i + 1).padStart(2, '0');
+    const name = table.name?.toLowerCase() || '';
+    const search = searchTable.toLowerCase();
+    if (tableNumber.includes(search) || name.includes(search)) {
+      acc.push(i);
+    }
+    return acc;
+  }, []);
+
   return (
     <div className="tables-wrapper">
       <div className="top-bar">
-        <input className="search-bar1" type="text" placeholder="Search..." />
+        <input
+          className="search-bar1"
+          type="text"
+          placeholder="Search..."
+          value={searchTable}
+          onChange={(e) => setSearchTable(e.target.value)}
+        />
       </div>
 
       <div className="tables-card">
         <h1 className="page-title1">Tables</h1>
 
         <div className="tables-grid">
-          {tables.map((table, index) => (
-            <div className="table-card" key={table.id}>
-              <button
-                className="delete-icon"
-                onClick={() => handleDelete(table.id)}
-                title="Delete"
-              >
-                <FaTrash />
-              </button>
-              <div className="table-title">Table</div>
-              <div className="table-id">{String(index + 1).padStart(2, '0')}</div>
-              <div className="chair-info">
-                <FaChair className="chair-icon" /> {table.chairs}
+          {filteredIndexes.map((i) => {
+            const table = tables[i];
+            const tableNumber = String(i + 1).padStart(2, '0');
+
+            return (
+              <div className="table-card" key={table.id}>
+                <button
+                  className="delete-icon"
+                  onClick={() => handleDelete(table.id)}
+                  title="Delete"
+                >
+                  <FaTrash />
+                </button>
+                <div className="table-title">Table</div>
+                <div className="table-id">{tableNumber}</div>
+                <div className="chair-info">
+                  <FaChair className="chair-icon" /> {table.chairs}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {!showForm ? (
             <div className="add-box" onClick={() => setShowForm(true)}>
@@ -83,7 +105,7 @@ function Tables() {
                 value={tempChairs}
                 onChange={(e) => setTempChairs(e.target.value)}
               >
-                {[...Array(10)].map((_, i) => (
+                {[...Array(6)].map((_, i) => (
                   <option key={i} value={String(i + 1).padStart(2, '0')}>
                     {String(i + 1).padStart(2, '0')}
                   </option>

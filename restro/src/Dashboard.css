@@ -1,16 +1,12 @@
 .dashboard-wrapper {
-  /* padding: 20px ; */
   font-family: sans-serif;
   background-color: #F0F5F3;
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  /* width: 100%; */
+  width: 1850px;
   height: 100%;
-  /* background-color: red; */
-  /* width: 1800px; */
   overflow-x: hidden;
-  /* box-sizing: border-box; */
-  /* position: relative; */
   margin-top: -20px;
   margin-left: -20px;
 }
@@ -19,7 +15,7 @@
   background-color: #FFFFFF;
   border-radius: 12px;
   margin-top: 10px;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .top-bar {
@@ -86,7 +82,6 @@
   margin-bottom: 20px;
   padding: 10px;
   height: 190px;
-  /* width: 25%; */
 }
 
 .card-image{
@@ -106,10 +101,21 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.card1{
+  background: #F0F5F3;
+  /* padding: 15px; */
+  border-radius: 12px;
+  flex: 1;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  /* padding-right: 10px; */
+}
+
 .card-content{
   margin-left: 80px;
   margin-top: -90px;
 }
+
 .main-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -152,6 +158,11 @@
   text-align: center;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -160,12 +171,15 @@
   font-weight: 600;
   margin-bottom: 10px;
   color: #333;
+  margin: 4px 0 0;
 }
 
 .summary-value {
   font-size: 20px;
   font-weight: bold;
-  color: #007bff;
+  /* color: #007bff; */
+  color: #333;
+  margin: 0;
 }
 
 .revenue-chart {
@@ -217,19 +231,7 @@
   border-bottom: 2px solid #BABABA;
   height: 50px; 
   padding-bottom: 10px;
-  
 }
-
-/* .table-header {
-  display: flex;
-  align-items: center;
-  gap: 50px; adjusts space between title and legend
-  padding: 10px 20px;
-  background-color: #F0F5F3;
-  border-bottom: 2px solid #BABABA;
-  height: 50px;
-} */
-
 
 .table-header-title {
   font-weight: bold;

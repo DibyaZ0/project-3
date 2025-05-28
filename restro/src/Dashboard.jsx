@@ -103,7 +103,7 @@ function Dashboard() {
         <h2 className="dashboard-heading">Analytics</h2>
 
         <div className={`card-grid ${highlightSection && highlightSection !== 'card' ? 'blurred' : ''}`}>
-          <div className="card">
+          <div className="card1">
           <img src="./Image.png" alt="Chef Icon" className="card-image" />
           <div className="card-content">
               <p>04</p>
@@ -147,8 +147,8 @@ function Dashboard() {
             <div className="summary-cards">
               {orderSummaryData.map((item, index) => (
                 <div key={item.label} className="summary-card-box">
-                  <p className="summary-label">{item.label}</p>
                   <p className="summary-value">{item.value}</p>
+                  <p className="summary-label">{item.label}</p>
                 </div>
               ))}
             </div>

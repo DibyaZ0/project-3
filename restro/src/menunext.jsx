@@ -1,23 +1,22 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FaMapMarkerAlt, FaClock, FaChair, FaTrash } from 'react-icons/fa';
 import './menunext.css';
-import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom'; 
-
 
 function Menunext() {
   const navigate = useNavigate();
   const location = useLocation();
   const initialCart = location.state?.cartItems || [];
+
   const [cartItems, setCartItems] = useState(initialCart);
   const [mode, setMode] = useState('Dine In');
   const [instructions, setInstructions] = useState('');
   const [showInstructionModal, setShowInstructionModal] = useState(false);
-
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [userSaved, setUserSaved] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   const DELIVERY_TIME_MINUTES = 30;
 
@@ -48,14 +47,25 @@ function Menunext() {
     setUserSaved(true);
   };
 
+  // Filter cart items based on search input
+  const filteredCartItems = cartItems.filter(item =>
+    item.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <div className="menunext-container">
       <h2 className="menu-greeting">Good evening</h2>
       <p className="menu-subtext">Place your order here</p>
 
-      <input className="menu-search" type="text" placeholder="Search..." />
+      <input
+        className="menu-search"
+        type="text"
+        placeholder="Search..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+      />
 
-      {cartItems.map((item, index) => (
+      {filteredCartItems.map((item, index) => (
         <div key={index} className="menunext-item">
           <img src={item.image} alt={item.name} className="item-img" />
           <span className="remove-item" onClick={() => removeItem(item.name)}>×</span>
@@ -106,34 +116,32 @@ function Menunext() {
             <p className="mandatory-note">* This field is mandatory. Without this, you can't move further.</p>
           </>
         ) : (
-        <div className="user-summary">
-          <h4>Your details</h4>
-          <p>{name}, {phone}</p>
-          <hr />
-          {mode === 'Take Away' && (
-           <>
-          <div className="delivery-info">
-          <FaMapMarkerAlt className="delivery-icon" />
-          <span>Delivery at Home - {address}</span>
+          <div className="user-summary">
+            <h4>Your details</h4>
+            <p>{name}, {phone}</p>
+            <hr />
+            {mode === 'Take Away' && (
+              <>
+                <div className="delivery-info">
+                  <FaMapMarkerAlt className="delivery-icon" />
+                  <span>Delivery at Home - {address}</span>
+                </div>
+                <div className="delivery-info">
+                  <FaClock className="delivery-icon" />
+                  <span>Delivery in <strong>{DELIVERY_TIME_MINUTES} mins</strong></span>
+                </div>
+                <hr />
+              </>
+            )}
           </div>
-          <div className="delivery-info">
-         <FaClock className="delivery-icon" />
-         <span>Delivery in <strong>{DELIVERY_TIME_MINUTES} mins</strong></span>
-       </div>
-       <hr />
-       </>
-       )}
-      </div>
-
-    )}
+        )}
       </div>
 
       {userSaved && (
-      <div className="swipe-button" onClick={() => navigate('/success')}>
-       → Swipe to Order
-      </div>
-     )}
-
+        <div className="swipe-button" onClick={() => navigate('/success')}>
+          → Swipe to Order
+        </div>
+      )}
 
       {showInstructionModal && (
         <div className="instruction-overlay">
@@ -142,14 +150,14 @@ function Menunext() {
               <h3 className="modal-title">Add Cooking instructions</h3>
               <span className="modal-close large-close" onClick={() => setShowInstructionModal(false)}>&times;</span>
             </div>
-            
+
             <div className="modal-area">
-            <textarea
-              className="modal-textarea"
-              placeholder="Type your instructions here..."
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-            />
+              <textarea
+                className="modal-textarea"
+                placeholder="Type your instructions here..."
+                value={instructions}
+                onChange={(e) => setInstructions(e.target.value)}
+              />
             </div>
 
             <p className="note-text">
@@ -167,4 +175,4 @@ function Menunext() {
   );
 }
 
-export default Menunext;  
+export default Menunext;
