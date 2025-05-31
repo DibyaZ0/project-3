@@ -1,0 +1,42 @@
+{
+  "Pizza": [
+    { "name": "Pepperoni", "price": "₹ 200", "image": "./pizza 1.png" },
+    { "name": "Capricciosa", "price": "₹ 200", "image": "./pizza 2.png" },
+    { "name": "Marinara", "price": "₹ 90", "image": "/pizza 3.png" },
+    { "name": "Sicilian", "price": "₹ 150", "image": "/pizza 4.png" },
+    { "name": "Neapolitan", "price": "₹ 250", "image": "/pizza 5.png" },
+    { "name": "Chicago", "price": "₹ 300", "image": "/pizza 6.png" }
+  ],
+  "Burger": [
+    { "name": "Cheeseburger", "price": "₹ 180", "image": "/burger 1.png" },
+    { "name": "Veg Burger", "price": "₹ 150", "image": "/burger 2.png" },
+    { "name": "Chicken Burger", "price": "₹ 200", "image": "/burger 3.png" },
+    { "name": "Double Patty", "price": "₹ 250", "image": "/burger 4.png" },
+    { "name": "Spicy Burger", "price": "₹ 220", "image": "/burger 5.png" },
+    { "name": "Classic Burger", "price": "₹ 70", "image": "/burger 6.png" }
+  ],
+  "Drink": [
+    { "name": "Coke", "price": "₹ 60", "image": "coke.png" },
+    { "name": "Lemonade", "price": "₹ 50", "image": "lemonade.png" },
+    { "name": "Iced Tea", "price": "₹ 70", "image": "/icetea.png" },
+    { "name": "Orange Juice", "price": "₹ 90", "image": "/orangejuice.png" },
+    { "name": "Smoothie", "price": "₹ 110", "image": "/smoothie.png" },
+    { "name": "Cold Coffee", "price": "₹ 100", "image": "/coldcoffe.png" }
+  ],
+  "French Fries": [
+    { "name": "Classic Fries", "price": "₹ 90", "image": "/fries 1.png" },
+    { "name": "Cheese Fries", "price": "₹ 120", "image": "/fries 2.png" },
+    { "name": "Peri Peri Fries", "price": "₹ 130", "image": "/fries 3.png" },
+    { "name": "Loaded Fries", "price": "₹ 150", "image": "/fries 4.png" },
+    { "name": "Curly Fries", "price": "₹ 140", "image": "/fries 5.png" },
+    { "name": "Garlic Fries", "price": "₹ 110", "image": "/fries 6.png" }
+  ],
+  "Veggies": [
+    { "name": "Grilled Broccoli", "price": "₹ 120", "image": "/veggie 2.png" },
+    { "name": "Sauteed Mushrooms", "price": "₹ 140", "image": "/veggie 1.webp" },
+    { "name": "Mixed Veg", "price": "₹ 160", "image": "/veggie 3.png" },
+    { "name": "Corn Salad", "price": "₹ 130", "image": "/veggie 4.png" },
+    { "name": "Grilled Paneer", "price": "₹ 180", "image": "/veggie 5.webp" },
+    { "name": "Veg Platter", "price": "₹ 200", "image": "/veggie 6.webp" }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "getRevenueByDay": "[{\"$group\":{\"_id\":{\"dayOfWeek\":{\"$dayOfWeek\":\"$createdAt\"}},\"totalRevenue\":{\"$sum\":\"$grandTotal\"}}},{\"$addFields\":{\"weekday\":{\"$arrayElemAt\":[[\"\",\"Sun\",\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\"],\"$_id.dayOfWeek\"]}}},{\"$sort\":{\"_id.dayOfWeek\":1}},{\"$project\":{\"_id\":0,\"weekday\":1,\"totalRevenue\":1}}]",
+  "revenueByWeek": ""
+}
