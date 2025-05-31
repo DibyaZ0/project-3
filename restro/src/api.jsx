@@ -27,6 +27,17 @@ export async function getAnalyticsSummary(filterData) {
   return data;
 }
 
+export async function getOrderSummary(filterData) {
+  const res = await fetch(`${API_BASE_URL}/orderSummary`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({"filter": filterData})
+  });
+  const data = await res.json();
+  console.log('Analytics summary fetched', res.json);
+  return data;
+}
+
 export async function createTable(tableRecord) {
     const res = await fetch(API_BASE_URL + "/tables/", {
       method: 'POST',

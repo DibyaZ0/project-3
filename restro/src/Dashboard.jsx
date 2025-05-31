@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, use } from "react";
 import {
   PieChart,
   Pie,
@@ -10,10 +10,16 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 import "./Dashboard.css";
-import { getAnalytics, getAnalyticsSummary, getChefs, getTables } from "./api";
+import {
+  getAnalytics,
+  getAnalyticsSummary,
+  getChefs,
+  getTables,
+  getOrderSummary,
+} from "./api";
 
 const COLORS = ["#C4C4C4", "#9c9c9c", "#686666"];
 const tableCount = 30;
@@ -37,6 +43,7 @@ function Dashboard() {
   });
 
   const [revenueData, setRevenueData] = useState([]);
+  const [orderSummaryData, setOrderSummaryData] = useState([]);
 
   const dropdownRef = useRef(null);
 
@@ -70,12 +77,21 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    async function getOrderSummaryData() {
-      const res = await getAnalyticsSummary({revenueFilter});
+    async function getAnalyticsSummaryData() {
+      const res = await getAnalyticsSummary({ revenueFilter });
       setRevenueData(res);
     }
-    getOrderSummaryData();
+    getAnalyticsSummaryData();
   }, [revenueFilter]);
+
+  useEffect(() => {
+    async function getOrderSummaryData() {
+      const res = await getOrderSummary({ orderFilter });
+      setOrderSummaryData(res);
+      console.log(res);
+    }
+    getOrderSummaryData();
+  }, [orderFilter]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -95,16 +111,16 @@ function Dashboard() {
   }, [searchTerm]);
 
   const isReserved = (tableNo) => reservedTables.includes(tableNo);
-  const orderSummaryData = [
-    { label: "Served", value: 10 },
-    { label: "Dine In", value: 20 },
-    { label: "Take Away", value: 30 },
-  ];
 
   const handleSectionFocus = (section) => {
     setHighlightSection(section);
     setShowDropdown(false);
   };
+
+  const totalOrders = orderSummaryData.reduce(
+    (acc, item) => acc + item.value,
+    0
+  );
   return (
     <div className="dashboard-wrapper">
       <div className="top-bar">
@@ -160,33 +176,46 @@ function Dashboard() {
             highlightSection && highlightSection !== "card" ? "blurred" : ""
           }`}
         >
-          <div className="card1">
-            <img src="./Image.png" alt="Chef Icon" className="card-image" />
+          <div className="card">
+            <div className="card-image">
+              <img src="./Image.png" alt="Chef Icon"/>
+            </div>
             <div className="card-content">
               <p>{beautifyNumber(analytics.totalChefs)}</p>
               <p>TOTAL CHEF</p>
             </div>
           </div>
           <div className="card">
-            <img src="./imagee.png" alt="Revenue Icon" className="card-image" />
+            <div className="card-image">
+              <img
+                src="./imagee.png"
+                alt="Revenue Icon"
+              />
+            </div>
             <div className="card-content">
               <p>{beautifyNumber(analytics.totalRevenue)}</p>
               <p>TOTAL REVENUE</p>
             </div>
           </div>
           <div className="card">
-            <img src="./Image 1.png" alt="Orders Icon" className="card-image" />
+            <div className="card-image">
+              <img
+                src="./Image 1.png"
+                alt="Orders Icon"
+              />
+            </div>
             <div className="card-content">
               <p>{beautifyNumber(analytics.totalOrders)}</p>
               <p>TOTAL ORDERS</p>
             </div>
           </div>
           <div className="card">
-            <img
-              src="./Image 2.png"
-              alt="Clients Icon"
-              className="card-image"
-            />
+            <div className="card-image">
+              <img
+                src="./Image 2.png"
+                alt="Clients Icon"
+              />
+            </div>
             <div className="card-content">
               <p>{beautifyNumber(analytics.totalClients)}</p>
               <p>TOTAL CLIENT</p>
@@ -206,6 +235,7 @@ function Dashboard() {
             <div className="section-header">
               <h4>Order Summary</h4>
               <select
+                className="header-part"
                 value={orderFilter}
                 onChange={(e) => setOrderFilter(e.target.value)}
               >
@@ -217,28 +247,50 @@ function Dashboard() {
             <div className="summary-main">
               <div className="summary-cards">
                 {orderSummaryData.map((item, index) => (
-                  <div key={item.label} className="summary-card-box">
-                    <p className="summary-value">{item.value}</p>
-                    <p className="summary-label">{item.label}</p>
+                  <div key={item.mode} className="summary-card-box">
+                    <p className="summary-value">
+                      {beautifyNumber(item.totalOrders)}
+                    </p>
+                    <p className="summary-label">{item.mode}</p>
                   </div>
                 ))}
               </div>
               <PieChart width={250} height={200}>
                 <Pie
                   data={orderSummaryData}
-                  dataKey="value"
-                  nameKey="label"
+                  dataKey="totalOrders"
+                  nameKey="mode"
                   innerRadius={40}
                   outerRadius={65}
                 >
                   {orderSummaryData.map((entry, index) => (
                     <Cell
-                      key={entry.label}
+                      key={entry.mode}
                       fill={COLORS[index % COLORS.length]}
                     />
                   ))}
                 </Pie>
               </PieChart>
+              <div className="summary-bars">
+                {orderSummaryData.map((item, index) => {
+                  const percent = Math.round((item.totalOrders / totalOrders) * 100);
+                  return (
+                    <div key={item.mode} className="summary-bar-row">
+                      <span className="bar-label">{item.mode}</span>
+                      <div className="bar-container">
+                        <div
+                          className="bar-fill"
+                          style={{
+                            width: `${percent}%`,
+                            backgroundColor: COLORS[index % COLORS.length],
+                          }}
+                        ></div>
+                      </div>
+                      <span className="bar-percent">({percent}%)</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
@@ -253,6 +305,7 @@ function Dashboard() {
             <div className="section-header">
               <h4>Revenue</h4>
               <select
+                className="header-part"
                 value={revenueFilter}
                 onChange={(e) => setRevenueFilter(e.target.value)}
               >
@@ -264,7 +317,7 @@ function Dashboard() {
             <ResponsiveContainer width="100%" height={400}>
               <BarChart data={revenueData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="weekday"/>
+                <XAxis dataKey="weekday" />
                 <YAxis hide={true} />
                 <Bar dataKey="totalRevenue" fill="#d1d1d1" />
               </BarChart>
@@ -280,10 +333,14 @@ function Dashboard() {
             <div className="section-header table-header">
               <div className="table-header-title">Tables</div>
               <div className="table-legend">
-                <div className="legend-box available"></div>
-                <span>Available</span>
-                <div className="legend-box reserved"></div>
-                <span>Reserved</span>
+                <div className="table-legend-item">
+                  <div className="legend-box reserved"></div>
+                  <span>Reserved</span>
+                </div>
+                <div className="table-legend-item">
+                  <div className="legend-box available"></div>
+                  <span>Available</span>
+                </div>
               </div>
             </div>
             <div className="tables-grid">
