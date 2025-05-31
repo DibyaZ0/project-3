@@ -1,4 +1,3 @@
-// src/pages/Success.jsx
 import React from 'react';
 import './success.css';
 

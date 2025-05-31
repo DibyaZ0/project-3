@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, use } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   PieChart,
   Pie,
@@ -63,7 +63,9 @@ function Dashboard() {
       const res = await getChefs();
       const tabeldata = await getTables();
       const analyticsData = await getAnalytics();
-      console.log(res);
+      const res2 = await getOrderSummary({ orderFilter });
+      setOrderSummaryData(res2);
+      console.log(res2);
       setChefs(res);
       setAnalytics({
         totalChefs: analyticsData?.totalChefs,
@@ -117,10 +119,11 @@ function Dashboard() {
     setShowDropdown(false);
   };
 
-  const totalOrders = orderSummaryData.reduce(
-    (acc, item) => acc + item.value,
-    0
-  );
+  const totalOrders = useMemo(() => {
+  return orderSummaryData.reduce((acc, item) => acc + item.totalOrders, 0);
+}, [orderSummaryData]);
+console.log("Total Orders:", totalOrders);
+
   return (
     <div className="dashboard-wrapper">
       <div className="top-bar">
@@ -255,42 +258,48 @@ function Dashboard() {
                   </div>
                 ))}
               </div>
-              <PieChart width={250} height={200}>
-                <Pie
-                  data={orderSummaryData}
-                  dataKey="totalOrders"
-                  nameKey="mode"
-                  innerRadius={40}
-                  outerRadius={65}
-                >
-                  {orderSummaryData.map((entry, index) => (
-                    <Cell
-                      key={entry.mode}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-              <div className="summary-bars">
-                {orderSummaryData.map((item, index) => {
-                  const percent = Math.round((item.totalOrders / totalOrders) * 100);
-                  return (
-                    <div key={item.mode} className="summary-bar-row">
-                      <span className="bar-label">{item.mode}</span>
-                      <div className="bar-container">
-                        <div
-                          className="bar-fill"
-                          style={{
-                            width: `${percent}%`,
-                            backgroundColor: COLORS[index % COLORS.length],
-                          }}
-                        ></div>
-                      </div>
-                      <span className="bar-percent">({percent}%)</span>
-                    </div>
-                  );
-                })}
-              </div>
+               <div className="summary-chart-section">
+  <div className="summary-pie">
+    <PieChart width={100} height={100}>
+      <Pie
+        data={orderSummaryData}
+        dataKey="totalOrders"
+        nameKey="mode"
+        innerRadius={30}
+        outerRadius={40}
+        paddingAngle={2}
+      >
+        {orderSummaryData.map((entry, index) => (
+          <Cell key={entry.mode} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+    </PieChart>
+  </div>
+
+  <div className="summary-bars">
+    {orderSummaryData.map((item, index) => {
+      const percent = totalOrders
+        ? Math.round((item.totalOrders / totalOrders) * 100)
+        : 0;
+      return (
+        <div key={item.mode} className="summary-bar-row">
+          <span className="bar-label">{item.mode}</span>
+          <span className="bar-percent">({percent}%)</span>
+          <div className="bar-container">
+            <div
+              className="bar-fill"
+              style={{
+                width: `${percent}%`,
+                backgroundColor: COLORS[index % COLORS.length],
+              }}
+            ></div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
             </div>
           </div>
 

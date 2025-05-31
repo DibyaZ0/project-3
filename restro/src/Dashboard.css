@@ -419,34 +419,42 @@
 .summary-chart-section {
   display: flex;
   align-items: center;
-  gap: 20px;
-
-  padding-top: 10px;
+  gap: 30px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
 .summary-pie {
-  background: white;
+  background: #f0eeee;
   border-radius: 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120px;
-  height: 120px;
 }
 
 .summary-bars {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* flex: 1; */
-  margin-right: -20px;
-  margin-top: -20px;
+  flex: 1;
 }
 
 .summary-bar-row {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.bar-percent {
+  font-size: 15px;
+  color: #888;
+  min-width: 40px;
+  margin-left: -5px;
+}
+
+.bar-container{
+  background-color: #FFFFFF;
+}
+
+.bar-label {
+  font-size: 15px;
 }

@@ -52,13 +52,7 @@ function Menu() {
 
   const goToMenuNext = async () => {
     navigate('/menunext', { state: { cartItems } });
-  // try {
-  //   const response = await saveOrder({ items: cartItems });
-  //   console.log("Order saved:", response);
-  //   navigate('/menunext', { state: { cartItems } });
-  // } catch (error) {
-  //   console.error("Error saving order:", error);
-  // }
+
 };
 
   const filteredItems = (data[activeCategory] || []).filter(item =>
