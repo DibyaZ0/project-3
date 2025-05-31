@@ -21,7 +21,6 @@ async function saveTable(req, res) {
 async function deleteTable(req, res) {
     const { id } = req.body;
     const deleteCount = await deleteTableRecord(id);
-    // console.log('Delete count:', deleteCount);
     if(deleteCount === 0) {
         return res.status(404).json({message: "Record no found"});
     } else {

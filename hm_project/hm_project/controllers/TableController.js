@@ -23,15 +23,13 @@ export async function getTableById(id) {
     }
 }
 
-let tableNo = 1; // Module-level variable to keep track of the table number
+let tableNo = 1;
 
 export async function saveTableRecord(table) {
     try {
-        // Ensure tablestatus is initialized as an empty array if not provided
         if (!Array.isArray(table.tablestatus)) {
             table.tablestatus = [];
         }
-        // Assign and increment the table number
         table.no = tableNo++;
         console.log('Record to save', table);
         const result = await getDB().collection(collectionName).insertOne(table);
