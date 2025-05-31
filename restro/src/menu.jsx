@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import './Menu.css';
+import './menu.css';
 import { FiPlus, FiMinus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import { saveOrder } from './api'; 
 
 function Menu() {
   const [data, setData] = useState({});
@@ -49,9 +50,16 @@ function Menu() {
     });
   };
 
-  const goToMenunext = () => {
+  const goToMenuNext = async () => {
     navigate('/menunext', { state: { cartItems } });
-  };
+  // try {
+  //   const response = await saveOrder({ items: cartItems });
+  //   console.log("Order saved:", response);
+  //   navigate('/menunext', { state: { cartItems } });
+  // } catch (error) {
+  //   console.error("Error saving order:", error);
+  // }
+};
 
   const filteredItems = (data[activeCategory] || []).filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -121,7 +129,7 @@ function Menu() {
         </div>
       </div>
 
-      <button className="menu-next" onClick={goToMenunext}>Next</button>
+      <button className="menu-next" onClick={goToMenuNext}>Next</button>
     </div>
   );
 }

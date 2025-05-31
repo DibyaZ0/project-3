@@ -1,20 +1,81 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import './Dashboard.css';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer
+} from "recharts";
+import "./Dashboard.css";
+import { getAnalytics, getAnalyticsSummary, getChefs, getTables } from "./api";
 
-const COLORS = ['#0088FE', '#FFBB28', '#00C49F'];
+const COLORS = ["#C4C4C4", "#9c9c9c", "#686666"];
 const tableCount = 30;
 const reservedTables = [2, 5, 7, 9];
 
 function Dashboard() {
-  const [orderFilter, setOrderFilter] = useState('Daily');
-  const [revenueFilter, setRevenueFilter] = useState('Daily');
-  const [tableView, setTableView] = useState('All');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [orderFilter, setOrderFilter] = useState("Daily");
+  const [revenueFilter, setRevenueFilter] = useState("Daily");
+  const [tableView, setTableView] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [highlightSection, setHighlightSection] = useState('');
+  const [highlightSection, setHighlightSection] = useState("");
+  const [chefs, setChefs] = useState([]);
+  const [tables, setTables] = useState([]);
+
+  const [analytics, setAnalytics] = useState({
+    totalRevenue: 0,
+    totalOrders: 0,
+    totalClients: 0,
+    totalChefs: 0,
+  });
+
+  const [revenueData, setRevenueData] = useState([]);
 
   const dropdownRef = useRef(null);
+
+  const beautifyNumber = (num) => {
+    if (num instanceof Number) {
+      if (num < 10) return "0" + num.toString();
+    }
+    if (num instanceof String) {
+      return num.length < 2 ? "0" + num : num;
+    }
+
+    return num;
+  };
+
+  useEffect(() => {
+    async function getchefsLocal() {
+      const res = await getChefs();
+      const tabeldata = await getTables();
+      const analyticsData = await getAnalytics();
+      console.log(res);
+      setChefs(res);
+      setAnalytics({
+        totalChefs: analyticsData?.totalChefs,
+        totalClients: analyticsData?.totalClients,
+        totalOrders: analyticsData?.totalOrders,
+        totalRevenue: analyticsData?.totalRevenue,
+      });
+      setTables(tabeldata);
+    }
+    getchefsLocal();
+  }, []);
+
+  useEffect(() => {
+    async function getOrderSummaryData() {
+      const res = await getAnalyticsSummary({revenueFilter});
+      setRevenueData(res);
+    }
+    getOrderSummaryData();
+  }, [revenueFilter]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -25,31 +86,21 @@ function Dashboard() {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+  }, []);
 
-    useEffect(() => {
-    if (searchTerm.trim() === '') {
-    setHighlightSection('');
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setHighlightSection("");
     }
-    }, [searchTerm]);
+  }, [searchTerm]);
 
   const isReserved = (tableNo) => reservedTables.includes(tableNo);
   const orderSummaryData = [
-    { label: 'Served', value: 10 },
-    { label: 'Dine In', value: 20 },
-    { label: 'Take Away', value: 30 },
+    { label: "Served", value: 10 },
+    { label: "Dine In", value: 20 },
+    { label: "Take Away", value: 30 },
   ];
 
-  const revenueData = [
-    { label: 'Mon', value: 200 },
-    { label: 'Tue', value: 5 },
-    { label: 'Wed', value: 10 },
-    { label: 'Thu', value: 20 },
-    { label: 'Fri', value: 10 },
-    { label: 'Sat', value: 40 },
-    { label: 'Sun', value: 30 },
-  ];
-   
   const handleSectionFocus = (section) => {
     setHighlightSection(section);
     setShowDropdown(false);
@@ -67,7 +118,7 @@ function Dashboard() {
           />
           <div
             className="dropdown-icon-clickable"
-            onClick={() => setShowDropdown(prev => !prev)}
+            onClick={() => setShowDropdown((prev) => !prev)}
           >
             <svg height="16" viewBox="0 0 512 512" width="16">
               <path
@@ -82,151 +133,203 @@ function Dashboard() {
           </div>
           {showDropdown && (
             <ul className="dropdown-options">
-              {['order Summary', 'Revenue', 'Tables', 'chef-list','card'].map(option => (
-                <li
-                  key={option}
-                  onClick={() => {
-                    setSearchTerm(option);
-                    setHighlightSection(option);
-                    setShowDropdown(false);
-                  }}
-                >
-                  {option}
-                </li>
-              ))}
+              {["order Summary", "Revenue", "Tables", "chef-list", "card"].map(
+                (option) => (
+                  <li
+                    key={option}
+                    onClick={() => {
+                      setSearchTerm(option);
+                      setHighlightSection(option);
+                      setShowDropdown(false);
+                    }}
+                  >
+                    {option}
+                  </li>
+                )
+              )}
             </ul>
           )}
         </div>
       </div>
 
-        <div className="dashboard-wrapper-2">
+      <div className="dashboard-wrapper-2">
         <h2 className="dashboard-heading">Analytics</h2>
 
-        <div className={`card-grid ${highlightSection && highlightSection !== 'card' ? 'blurred' : ''}`}>
+        <div
+          className={`card-grid ${
+            highlightSection && highlightSection !== "card" ? "blurred" : ""
+          }`}
+        >
           <div className="card1">
-          <img src="./Image.png" alt="Chef Icon" className="card-image" />
-          <div className="card-content">
-              <p>04</p>
+            <img src="./Image.png" alt="Chef Icon" className="card-image" />
+            <div className="card-content">
+              <p>{beautifyNumber(analytics.totalChefs)}</p>
               <p>TOTAL CHEF</p>
             </div>
           </div>
           <div className="card">
             <img src="./imagee.png" alt="Revenue Icon" className="card-image" />
             <div className="card-content">
-              <p>00</p>
+              <p>{beautifyNumber(analytics.totalRevenue)}</p>
               <p>TOTAL REVENUE</p>
             </div>
           </div>
           <div className="card">
             <img src="./Image 1.png" alt="Orders Icon" className="card-image" />
             <div className="card-content">
-              <p>00</p>
+              <p>{beautifyNumber(analytics.totalOrders)}</p>
               <p>TOTAL ORDERS</p>
             </div>
           </div>
           <div className="card">
-            <img src="./Image 2.png" alt="Clients Icon" className="card-image" />
+            <img
+              src="./Image 2.png"
+              alt="Clients Icon"
+              className="card-image"
+            />
             <div className="card-content">
-              <p>00</p>
-              <p>TOTAL ORDERS</p>
+              <p>{beautifyNumber(analytics.totalClients)}</p>
+              <p>TOTAL CLIENT</p>
             </div>
           </div>
         </div>
 
         <div className="main-grid">
-          <div id="order Summary" className={`order-summary ${highlightSection && highlightSection !== 'order Summary' ? 'blurred' : ''}`}>
+          <div
+            id="order Summary"
+            className={`order-summary ${
+              highlightSection && highlightSection !== "order Summary"
+                ? "blurred"
+                : ""
+            }`}
+          >
             <div className="section-header">
               <h4>Order Summary</h4>
-              <select value={orderFilter} onChange={(e) => setOrderFilter(e.target.value)}>
-                {['Daily', 'Weekly', 'Monthly', 'Yearly'].map(opt => (
+              <select
+                value={orderFilter}
+                onChange={(e) => setOrderFilter(e.target.value)}
+              >
+                {["Daily", "Weekly", "Monthly", "Yearly"].map((opt) => (
                   <option key={opt}>{opt}</option>
                 ))}
               </select>
             </div>
-            <div className= "summary-main">
-            <div className="summary-cards">
-              {orderSummaryData.map((item, index) => (
-                <div key={item.label} className="summary-card-box">
-                  <p className="summary-value">{item.value}</p>
-                  <p className="summary-label">{item.label}</p>
-                </div>
-              ))}
-            </div>
-            <PieChart width={250} height={200}>
-              <Pie
-                data={orderSummaryData}
-                dataKey="value"
-                nameKey="label"
-                outerRadius={70}
-                label
-              >
-                {orderSummaryData.map((entry, index) => (
-                  <Cell key={entry.label} fill={COLORS[index % COLORS.length]} />
+            <div className="summary-main">
+              <div className="summary-cards">
+                {orderSummaryData.map((item, index) => (
+                  <div key={item.label} className="summary-card-box">
+                    <p className="summary-value">{item.value}</p>
+                    <p className="summary-label">{item.label}</p>
+                  </div>
                 ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart> 
+              </div>
+              <PieChart width={250} height={200}>
+                <Pie
+                  data={orderSummaryData}
+                  dataKey="value"
+                  nameKey="label"
+                  innerRadius={40}
+                  outerRadius={65}
+                >
+                  {orderSummaryData.map((entry, index) => (
+                    <Cell
+                      key={entry.label}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
             </div>
           </div>
-          
-          <div id="Revenue" className={`revenue-section ${highlightSection && highlightSection !== 'Revenue' ? 'blurred' : ''}`}>
+
+          <div
+            id="Revenue"
+            className={`revenue-section ${
+              highlightSection && highlightSection !== "Revenue"
+                ? "blurred"
+                : ""
+            }`}
+          >
             <div className="section-header">
               <h4>Revenue</h4>
-              <select value={revenueFilter} onChange={(e) => setRevenueFilter(e.target.value)}>
-                {['Daily', 'Weekly', 'Monthly', 'Yearly'].map(opt => (
+              <select
+                value={revenueFilter}
+                onChange={(e) => setRevenueFilter(e.target.value)}
+              >
+                {["Daily", "Weekly", "Monthly", "Yearly"].map((opt) => (
                   <option key={opt}>{opt}</option>
                 ))}
               </select>
             </div>
-            <div className="revenue-chart">
-              {revenueData.map(day => (
-                <div key={day.label} className="bar">
-                  <div className="bar-fill" style={{ height: `${day.value * 2}px` }}></div>
-                  <div className="bar-label">{day.label}</div>
-                </div>
-              ))}
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={revenueData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="weekday"/>
+                <YAxis hide={true} />
+                <Bar dataKey="totalRevenue" fill="#d1d1d1" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div
+            id="Tables"
+            className={`table-section ${
+              highlightSection && highlightSection !== "Tables" ? "blurred" : ""
+            }`}
+          >
+            <div className="section-header table-header">
+              <div className="table-header-title">Tables</div>
+              <div className="table-legend">
+                <div className="legend-box available"></div>
+                <span>Available</span>
+                <div className="legend-box reserved"></div>
+                <span>Reserved</span>
+              </div>
+            </div>
+            <div className="tables-grid">
+              {tables.map((table) => {
+                const reserved = table?.tablestatus?.length > 0;
+                return (
+                  <div
+                    key={table?._id}
+                    className="table-box"
+                    style={{
+                      backgroundColor: reserved ? "lightgreen" : "white",
+                      border: reserved ? "2px solid green" : "1px solid #ccc",
+                    }}
+                  >
+                    Table {table?.no?.toString().padStart(2, "0")}
+                  </div>
+                );
+              })}
             </div>
           </div>
-      
-        <div id="Tables" className={`table-section ${highlightSection && highlightSection !== 'Tables' ? 'blurred' : ''}`}>
-        <div className="section-header table-header">
-        <div className="table-header-title">Tables</div>
-        <div className="table-legend">
-        <div className="legend-box available"></div><span>Available</span>
-        <div className="legend-box reserved"></div><span>Reserved</span>
         </div>
-      </div>
-      <div className="tables-grid">
-      {Array.from({ length: tableCount }, (_, i) => i + 1).map((num) => {
-      const reserved = isReserved(num);
-        return (
+
         <div
-        key={num}
-        className="table-box"
-        style={{
-            backgroundColor: reserved ? 'lightgreen' : 'white',
-            border: reserved ? '2px solid green' : '1px solid #ccc',
-        }}
+          id="chef-list"
+          className={`chef-list ${
+            highlightSection && highlightSection !== "chef-list"
+              ? "blurred"
+              : ""
+          }`}
         >
-        Table {num.toString().padStart(2, '0')}
-        </div>
-         ) 
-        })}
-       </div>
-       </div>
-      </div>
-      
-        <div id="chef-list" className={`chef-list ${highlightSection && highlightSection !== 'chef-list' ? 'blurred' : ''}`}>
           <div className="chef-header">
             <h3>Chef Name</h3>
             <h3 className="order-label">Order Taken</h3>
           </div>
           <ul>
-            <li><span className="chef-name">Manesh</span><span className="order-count">00</span></li><hr />
-            <li><span className="chef-name">Pritam</span><span className="order-count">00</span></li><hr />
-            <li><span className="chef-name">Yash</span><span className="order-count">00</span></li><hr />
-            <li><span className="chef-name">Tenzen</span><span className="order-count">00</span></li><hr />
+            {chefs.map((ele) => {
+              return (
+                <>
+                  <li key={ele?._id}>
+                    <span className="chef-name">{ele?.name}</span>
+                    <span className="order-count">{ele?.orderCount}</span>
+                  </li>
+                  <hr />
+                </>
+              );
+            })}
           </ul>
         </div>
       </div>

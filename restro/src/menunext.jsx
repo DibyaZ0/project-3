@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaMapMarkerAlt, FaClock, FaChair, FaTrash } from 'react-icons/fa';
 import './menunext.css';
-
+import { saveOrder } from './api'; 
 function Menunext() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,10 +47,42 @@ function Menunext() {
     setUserSaved(true);
   };
 
-  // Filter cart items based on search input
   const filteredCartItems = cartItems.filter(item =>
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
+
+
+const handleSwipeToOrder = async () => {
+  console.log("Placing order with the following details:");
+  console.log("Cart Items:", cartItems);
+  try {
+    const orderData = {
+      orderId: 'ORD-' + Math.floor(10000 + Math.random() * 90000),
+      items: cartItems,
+      instructions,
+      name,
+      phone,
+      address: mode === 'Take Away' ? address : '',
+      mode,
+      itemTotal,
+      delivery,
+      tax,
+      grandTotal,
+      createdAt: new Date(),
+      durationMin: 3,
+      tableNo: '01',
+      statusDetail: 'ongoing'
+    };
+
+    const response = await saveOrder(orderData);
+    console.log("Order saved to backend:", response);
+    navigate('/success');
+  } catch (error) {
+    console.error("Failed to save order:", error);
+    alert("There was an issue placing your order. Please try again.");
+  }
+};
+
 
   return (
     <div className="menunext-container">
@@ -138,7 +170,7 @@ function Menunext() {
       </div>
 
       {userSaved && (
-        <div className="swipe-button" onClick={() => navigate('/success')}>
+        <div className="swipe-button" onClick={handleSwipeToOrder}>
           → Swipe to Order
         </div>
       )}

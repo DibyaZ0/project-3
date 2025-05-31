@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaChair, FaTrash } from 'react-icons/fa';
+import { getTables, createTable, deleteTable } from './api';
 import './Tables.css';
 
 function Tables() {
@@ -10,31 +11,32 @@ function Tables() {
   const [searchTable, setSearchTable] = useState('');
 
   useEffect(() => {
-    fetch('/data/tablesData.json')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch tables data');
-        return res.json();
-      })
+    getTables()
       .then(data => setTables(data))
-      .catch(err => console.error(err));
+      .catch(err => console.error('Error fetching tables:', err));
   }, []);
 
-  const handleCreate = () => {
-    setTables([
-      ...tables,
-      {
-        id: Date.now(),
-        name: tempName,
-        chairs: tempChairs,
-      },
-    ]);
+  const handleCreate = async () => {
+    const newTable = {
+      name: tempName,
+      chairs: tempChairs
+    };
+    const saved = await createTable(newTable);
+    if (saved && saved._id) {
+      setTables([...tables, saved]);
+    }
     setTempName('');
     setTempChairs('03');
     setShowForm(false);
   };
 
-  const handleDelete = (id) => {
-    setTables(tables.filter((t) => t.id !== id));
+  const handleDelete = async (id) => {
+    const result = await deleteTable(id);
+    if (result.message === 'Record deleted successfully') {
+      setTables(tables.filter((t) => t._id !== id));
+    }else {
+      alert('Failed to delete table. Please try again.');
+    }
   };
 
   const filteredIndexes = tables.reduce((acc, table, i) => {
@@ -68,10 +70,10 @@ function Tables() {
             const tableNumber = String(i + 1).padStart(2, '0');
 
             return (
-              <div className="table-card" key={table.id}>
+              <div className="table-card" key={table._id}>
                 <button
                   className="delete-icon"
-                  onClick={() => handleDelete(table.id)}
+                  onClick={() => handleDelete(table._id)}
                   title="Delete"
                 >
                   <FaTrash />

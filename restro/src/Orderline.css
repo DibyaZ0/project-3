@@ -86,7 +86,7 @@ body {
 }
 
 .order-type-box {
-  padding: 10px;
+  padding: 8px;
   border-radius: 8px;
   text-align: right;
   font-size: 12px;
@@ -171,4 +171,19 @@ ul.order-items-list {
 
 .order-items,.order-time,.order-table{
  margin-left: -30px;
+}
+
+.pickup-dropdown {
+  margin-top: 2px;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.lucky{
+  margin-left: -55px;
+  margin-top: 0px;
 }

@@ -382,3 +382,37 @@
 .blurred-wrapper {
   position: relative;
 }
+
+.order-percentage-bars {
+  margin-left: 200px;
+}
+
+.order-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.order-label {
+  width: 60px;
+}
+
+.order-percent {
+  width: 50px;
+  color: #666;
+}
+
+.bar-container {
+  flex: 1;
+  height: 8px;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill-colored {
+  height: 100%;
+  border-radius: 4px;
+}
