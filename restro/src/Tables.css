@@ -87,9 +87,8 @@
 }
 
 .delete-icon {
-  position: absolute;
-  bottom: 78px;
-  left: 72px;
+  margin-top: 10px;
+  margin-left: 90px;
   background: none;
   border: none;
   font-size: 16px;
