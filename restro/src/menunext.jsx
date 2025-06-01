@@ -69,7 +69,7 @@ const handleSwipeToOrder = async () => {
       tax,
       grandTotal,
       createdAt: new Date(),
-      durationMin: 3,
+      durationMin: 30,
       tableNo: '01',
       statusDetail: 'ongoing'
     };
