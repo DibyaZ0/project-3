@@ -93,7 +93,7 @@ function Dashboard() {
       console.log(res);
     }
     getOrderSummaryData();
-  }, [orderFilter]);
+  },[orderFilter]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -259,47 +259,45 @@ console.log("Total Orders:", totalOrders);
                 ))}
               </div>
                <div className="summary-chart-section">
-  <div className="summary-pie">
-    <PieChart width={100} height={100}>
-      <Pie
-        data={orderSummaryData}
-        dataKey="totalOrders"
-        nameKey="mode"
-        innerRadius={30}
-        outerRadius={40}
-        paddingAngle={2}
-      >
-        {orderSummaryData.map((entry, index) => (
-          <Cell key={entry.mode} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-    </PieChart>
-  </div>
-
-  <div className="summary-bars">
-    {orderSummaryData.map((item, index) => {
-      const percent = totalOrders
-        ? Math.round((item.totalOrders / totalOrders) * 100)
-        : 0;
-      return (
-        <div key={item.mode} className="summary-bar-row">
-          <span className="bar-label">{item.mode}</span>
-          <span className="bar-percent">({percent}%)</span>
-          <div className="bar-container">
-            <div
+               <div className="summary-pie">
+               <PieChart width={100} height={100}>
+                <Pie
+                data={orderSummaryData}
+                dataKey="totalOrders"
+                nameKey="mode"
+                innerRadius={30}
+                outerRadius={40}
+                paddingAngle={2}
+                >
+               {orderSummaryData.map((entry, index) => (
+               <Cell key={entry.mode} fill={COLORS[index % COLORS.length]} />
+                ))}
+               </Pie>
+               </PieChart>
+              </div>
+             <div className="summary-bars">
+              {orderSummaryData.map((item, index) => {
+              const percent = totalOrders
+              ? Math.round((item.totalOrders / totalOrders) * 100)
+              : 0;
+              return (
+              <div key={item.mode} className="summary-bar-row">
+              <span className="bar-label">{item.mode}</span>
+              <span className="bar-percent">({percent}%)</span>
+              <div className="bar-container">
+              <div
               className="bar-fill"
               style={{
                 width: `${percent}%`,
                 backgroundColor: COLORS[index % COLORS.length],
               }}
             ></div>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-</div>
-
+             </div>
+             </div>
+              );
+              })}
+             </div>
+             </div>
             </div>
           </div>
 
